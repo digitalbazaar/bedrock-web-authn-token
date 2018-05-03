@@ -1,0 +1,22 @@
+{
+  "name": "bedrock-web-authn-token",
+  "version": "0.1.0-0",
+  "description": "Token-based authentication for Bedrock Web Apps",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalbazaar/bedrock-web-authn-token"
+  },
+  "bedrock": {
+    "browserDependencies": "all",
+    "manifest": {
+      "axios": {
+        "main": "dist/axios.min.js"
+      }
+    }
+  }
+}
