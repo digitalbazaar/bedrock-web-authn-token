@@ -15,13 +15,14 @@ export class LoginController {
     this.tokenService = new TokenService(tokenServiceConfig);
   }
 
-  async login() {
+  async login({tokenType}) {
     this.state.loading = true;
 
     try {
       const result = await this.tokenService.login({
         email: this.state.email,
         // phoneNumber: this.state.phoneNumber,
+        tokenType: tokenType,
         token: this.state.token
       });
       console.log('login result', result);
