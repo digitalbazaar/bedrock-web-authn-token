@@ -26,7 +26,7 @@ export class TokenService {
 
     if(type === 'password') {
       assertString(password, 'password');
-      payload.hash = await hashToken(password);
+      payload.hash = await hashToken({token: password});
     }
 
     const response = await axios.post(url + `/${type}`, payload);
@@ -37,10 +37,11 @@ export class TokenService {
     assertString(email, 'email');
     validateTokenType(type);
 
-    const response = await axios.get(url + `/${type}`, {
+    const response = await axios.get(url + `/${type}/salt`, {
       params: {email}
     });
-    return response.data;
+    const {salt} = response.data;
+    return salt;
   }
 
   async remove({url = this.config.urls.tokens, account, type}) {
@@ -53,17 +54,21 @@ export class TokenService {
     return response.data;
   }
 
+  // TODO: change `tokenType` to `type`?
   async login({url = this.config.urls.login, email, tokenType, token}) {
     assertString(email, 'email');
     assertString(tokenType, 'tokenType');
     assertString(token, 'token');
+
+    // get user's salt for bcrypt hash computation
+    const salt = await this.getSalt({email, type: tokenType});
 
     // POST for verification and to establish session
     const response = await axios.post(url, {
       email,
       type: tokenType,
       // phoneNumber,
-      hash: await hashToken(token)
+      hash: await hashToken({token, salt})
     });
     return response.data;
   }
@@ -82,9 +87,11 @@ function assertString(x, name) {
   }
 }
 
-async function hashToken(token) {
+async function hashToken({token, salt = null}) {
   // TODO: receive required number of rounds from backend config
   const rounds = 10;
-  const salt = await bcrypt.genSalt(rounds);
+  if(salt === null) {
+    salt = await bcrypt.genSalt(rounds);
+  }
   return bcrypt.hash(token, salt);
 }
