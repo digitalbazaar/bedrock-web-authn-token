@@ -6,15 +6,13 @@
 import {TokenService} from './TokenService.js';
 
 export class LoginController {
-  constructor(config = {}) {
+  constructor({tokenServiceConfig = {}} = {}) {
     this.state = {
       loading: false,
-      multiple: false,
-      password: null,
       email: null,
-      passcode: null
+      token: null
     };
-    this.tokenService = new TokenService(config);
+    this.tokenService = new TokenService(tokenServiceConfig);
   }
 
   async login() {
@@ -23,7 +21,8 @@ export class LoginController {
     try {
       const result = await this.tokenService.login({
         email: this.state.email,
-        password: this.state.password
+        // phoneNumber: this.state.phoneNumber,
+        token: this.state.token
       });
       console.log('login result', result);
 
