@@ -53,13 +53,15 @@ export class TokenService {
     return response.data;
   }
 
-  async login({url = this.config.urls.login, email, token}) {
+  async login({url = this.config.urls.login, email, tokenType, token}) {
     assertString(email, 'email');
+    assertString(tokenType, 'tokenType');
     assertString(token, 'token');
 
     // POST for verification and to establish session
     const response = await axios.post(url, {
       email,
+      type: tokenType,
       // phoneNumber,
       hash: await hashToken(token)
     });
