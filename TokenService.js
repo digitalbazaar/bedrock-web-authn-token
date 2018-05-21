@@ -26,16 +26,10 @@ export class TokenService {
 
     if(type === 'password') {
       assertString(password, 'password');
-
-      // TODO: receive required number of rounds from backend config
-      const rounds = 10;
-      const salt = await bcrypt.genSalt(rounds);
-      payload.hash = await bcrypt.hash(password, salt);
+      payload.hash = await hashToken(password);
     }
 
-    console.log('creating token', payload);
     const response = await axios.post(url + `/${type}`, payload);
-    console.log('response', response);
     return response.data;
   }
 
@@ -46,7 +40,6 @@ export class TokenService {
     const response = await axios.get(url + `/${type}`, {
       params: {email}
     });
-    console.log('response', response);
     return response.data;
   }
 
@@ -57,28 +50,19 @@ export class TokenService {
     const response = await axios.delete(url + `/${type}`, null, {
       params: {account}
     });
-    console.log('response', response);
     return response.data;
   }
 
-  async login({url = this.config.urls.login, email, password, token}) {
+  async login({url = this.config.urls.login, email, token}) {
     assertString(email, 'email');
-    assertOptionalString(password, 'password');
-    assertOptionalString(token, 'token');
-    if(!(password || token)) {
-      throw new Error('Either "password" or "token" must be given.');
-    }
-    if(password && token) {
-      throw new Error('Only "password" or "token" must be given.');
-    }
+    assertString(token, 'token');
 
     // POST for verification and to establish session
     const response = await axios.post(url, {
       email,
       // phoneNumber,
-      password
+      hash: await hashToken(token)
     });
-    console.log('response', response);
     return response.data;
   }
 }
@@ -96,8 +80,9 @@ function assertString(x, name) {
   }
 }
 
-function assertOptionalString(x, name) {
-  if(x && typeof x !== 'string') {
-    return new TypeError(`"${name}" must be a string.`);
-  }
+async function hashToken(token) {
+  // TODO: receive required number of rounds from backend config
+  const rounds = 10;
+  const salt = await bcrypt.genSalt(rounds);
+  return bcrypt.hash(token, salt);
 }
