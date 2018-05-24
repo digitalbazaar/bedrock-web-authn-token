@@ -18,11 +18,21 @@ export class TokenService {
     this.config = {urls};
   }
 
-  async create({url = this.config.urls.tokens, email, type, password}) {
-    assertString(email, 'email');
+  async create(
+    {url = this.config.urls.tokens, account, email, type, password}) {
+    assertOptionalString(account, 'account');
+    assertOptionalString(email, 'email');
     validateTokenType(type);
+    if(!(account || email)) {
+      throw new Error('Either "account" or "email" must be given.');
+    }
 
-    const payload = {email};
+    const payload = {};
+    if(account) {
+      payload.account = account;
+    } else {
+      payload.email = email;
+    }
 
     if(type === 'password') {
       assertString(password, 'password');
@@ -83,8 +93,12 @@ function validateTokenType(type) {
 
 function assertString(x, name) {
   if(typeof x !== 'string') {
-    return new TypeError(`"${name}" must be a string.`);
+    throw new TypeError(`"${name}" must be a string.`);
   }
+}
+
+function assertOptionalString(x, name) {
+  x === undefined || assertString(x, name);
 }
 
 async function hashToken({token, salt = null}) {
