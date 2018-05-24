@@ -25,9 +25,7 @@ export class LoginController {
         tokenType: tokenType,
         token: this.state.token
       });
-      console.log('login result', result);
-
-      // TODO:
+      return result;
     } finally {
       this.state.loading = false;
     }
