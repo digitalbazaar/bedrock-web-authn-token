@@ -79,6 +79,8 @@ export class TokenService {
       type: tokenType,
       // phoneNumber,
       hash: await hashToken({token, salt})
+    }, {
+      headers: {'Accept': 'application/ld+json, application/json'}
     });
     return response.data;
   }
