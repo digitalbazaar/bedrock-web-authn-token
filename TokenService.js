@@ -39,8 +39,8 @@ export class TokenService {
       payload.hash = await hashToken({token: password});
     }
 
-    const response = await axios.post(url + `/${type}`, payload);
-    return response.data;
+    await axios.post(url + `/${type}`, payload);
+    return payload;
   }
 
   async getSalt({url = this.config.urls.tokens, email, type}) {
