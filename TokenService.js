@@ -74,15 +74,16 @@ export class TokenService {
     const salt = await this.getSalt({email, type: tokenType});
 
     // POST for verification and to establish session
+    const hash = await hashToken({token, salt});
     const response = await axios.post(url, {
       email,
       type: tokenType,
       // phoneNumber,
-      hash: await hashToken({token, salt})
+      hash
     }, {
       headers: {'Accept': 'application/ld+json, application/json'}
     });
-    return response.data;
+    return {result: response.data, tokenHash: hash};
   }
 }
 
