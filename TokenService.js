@@ -85,6 +85,12 @@ export class TokenService {
     });
     return {result: response.data, tokenHash: hash};
   }
+
+  async hashPasswordToken({email, password}) {
+    // get user's salt for bcrypt hash computation
+    const salt = await this.getSalt({email, type: 'password'});
+    return hashToken({token: password, salt});
+  }
 }
 
 function validateTokenType(type) {
