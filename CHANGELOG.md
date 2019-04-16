@@ -1,6 +1,6 @@
 # bedrock-web-authn-token ChangeLog
 
-## 0.0.0 - 2018-xx-xx
+## 1.0.0 - 2019-04-16
 
 ### Added
 - Add core files.
