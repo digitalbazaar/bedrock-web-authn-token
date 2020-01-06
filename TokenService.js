@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2020 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
@@ -18,10 +18,12 @@ export class TokenService {
     this.config = {urls};
   }
 
-  async create(
-    {url = this.config.urls.tokens, account, email, type, password}) {
+  async create({
+    url = this.config.urls.tokens, account, email, type, clientId, password
+  }) {
     assertOptionalString(account, 'account');
     assertOptionalString(email, 'email');
+    assertOptionalString(clientId, 'clientId');
     validateTokenType(type);
     if(!(account || email)) {
       throw new Error('Either "account" or "email" must be given.');
@@ -32,6 +34,10 @@ export class TokenService {
       payload.account = account;
     } else {
       payload.email = email;
+    }
+
+    if(clientId !== undefined) {
+      payload.clientId = clientId;
     }
 
     if(type === 'password') {
@@ -65,16 +71,19 @@ export class TokenService {
   }
 
   // TODO: change `tokenType` to `type`?
-  async login({url = this.config.urls.login, email, tokenType, token}) {
+  async login({
+    url = this.config.urls.login, email, tokenType, token, clientId
+  }) {
     assertString(email, 'email');
     assertString(tokenType, 'tokenType');
     assertString(token, 'token');
+    assertOptionalString(clientId, 'clientId');
 
     // get user's salt for bcrypt hash computation
     const salt = await this.getSalt({email, type: tokenType});
 
     // POST for verification and to establish session
-    const hash = await hashToken({token, salt});
+    const hash = await hashToken({token, clientId, salt});
     const response = await axios.post(url, {
       email,
       type: tokenType,
@@ -110,11 +119,14 @@ function assertOptionalString(x, name) {
   x === undefined || assertString(x, name);
 }
 
-async function hashToken({token, salt = null}) {
+async function hashToken({token, clientId, salt = null}) {
   // TODO: receive required number of rounds from backend config
   const rounds = 10;
   if(salt === null) {
     salt = await bcrypt.genSalt(rounds);
+  }
+  if(clientId !== undefined) {
+    token += `:${clientId}`;
   }
   return bcrypt.hash(token, salt);
 }

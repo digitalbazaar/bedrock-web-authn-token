@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2018 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2018-2020 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
@@ -15,7 +15,7 @@ export class LoginController {
     this.tokenService = new TokenService(tokenServiceConfig);
   }
 
-  async login({tokenType}) {
+  async login({tokenType, clientId}) {
     this.state.loading = true;
 
     try {
@@ -29,7 +29,8 @@ export class LoginController {
         email: this.state.email,
         // phoneNumber: this.state.phoneNumber,
         tokenType,
-        token
+        token,
+        clientId
       });
       return result;
     } finally {
