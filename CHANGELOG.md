@@ -1,5 +1,16 @@
 # bedrock-web-authn-token ChangeLog
 
+## 2.0.0 - 2020-xx-xx
+
+### Added
+- Add `authenticate` API.
+- Allow setting `requiredAuthenticationMethods` and `authenticationMethod`
+  on tokens.
+
+### Changed
+- **BREAKING**: Remove params from `login` API; require use of `authenticate`
+  API prior to `login`.
+
 ## 1.1.0 - 2020-01-06
 
 ### Added
