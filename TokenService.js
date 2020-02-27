@@ -12,6 +12,7 @@ export class TokenService {
   constructor({
     urls = {
       tokens: '/authn/tokens',
+      authenticate: '/authn/token/authenticate',
       login: '/authn/token/login'
     }
   } = {}) {
@@ -19,7 +20,8 @@ export class TokenService {
   }
 
   async create({
-    url = this.config.urls.tokens, account, email, type, clientId, password
+    url = this.config.urls.tokens, account, email, type, clientId, password,
+    authenticationMethod = type, requiredAuthenticationMethods = []
   }) {
     assertOptionalString(account, 'account');
     assertOptionalString(email, 'email');
@@ -42,8 +44,11 @@ export class TokenService {
 
     if(type === 'password') {
       assertString(password, 'password');
-      payload.hash = await hashToken({token: password});
+      payload.hash = await hashChallenge({challenge: password});
     }
+
+    payload.authenticationMethod = authenticationMethod;
+    payload.requiredAuthenticationMethods = requiredAuthenticationMethods;
 
     await axios.post(url + `/${type}`, payload);
     return payload;
@@ -70,35 +75,44 @@ export class TokenService {
     return response.data;
   }
 
-  // TODO: change `tokenType` to `type`?
-  async login({
-    url = this.config.urls.login, email, tokenType, token, clientId
+  async authenticate({
+    url = this.config.urls.authenticate, email, type, challenge, clientId
   }) {
     assertString(email, 'email');
-    assertString(tokenType, 'tokenType');
-    assertString(token, 'token');
+    assertString(type, 'type');
+    assertString(challenge, 'challenge');
     assertOptionalString(clientId, 'clientId');
 
-    // get user's salt for bcrypt hash computation
-    const salt = await this.getSalt({email, type: tokenType});
+    // hash challenge for these token types
+    let hash;
+    if(type === 'nonce' || type === 'password') {
+      hash = await this.hashChallenge({email, type, challenge, clientId});
+      challenge = undefined;
+    }
 
     // POST for verification and to establish session
-    const hash = await hashToken({token, clientId, salt});
     const response = await axios.post(url, {
       email,
-      type: tokenType,
-      // phoneNumber,
-      hash
+      type,
+      hash,
+      challenge
     }, {
       headers: {'Accept': 'application/ld+json, application/json'}
     });
     return {result: response.data, tokenHash: hash};
   }
 
-  async hashPasswordToken({email, password}) {
+  async login({url = this.config.urls.login}) {
+    const response = await axios.post(url, {type: 'multifactor'}, {
+      headers: {'Accept': 'application/ld+json, application/json'}
+    });
+    return {result: response.data};
+  }
+
+  async hashChallenge({email, type, challenge, clientId}) {
     // get user's salt for bcrypt hash computation
-    const salt = await this.getSalt({email, type: 'password'});
-    return hashToken({token: password, salt});
+    const salt = await this.getSalt({email, type});
+    return hashChallenge({challenge, clientId, salt});
   }
 }
 
@@ -119,14 +133,14 @@ function assertOptionalString(x, name) {
   x === undefined || assertString(x, name);
 }
 
-async function hashToken({token, clientId, salt = null}) {
+async function hashChallenge({challenge, clientId, salt = null}) {
   // TODO: receive required number of rounds from backend config
   const rounds = 10;
   if(salt === null) {
     salt = await bcrypt.genSalt(rounds);
   }
   if(clientId !== undefined) {
-    token += `:${clientId}`;
+    challenge += `:${clientId}`;
   }
-  return bcrypt.hash(token, salt);
+  return bcrypt.hash(challenge, salt);
 }
