@@ -13,7 +13,8 @@ export class TokenService {
     urls = {
       tokens: '/authn/tokens',
       authenticate: '/authn/token/authenticate',
-      login: '/authn/token/login'
+      login: '/authn/token/login',
+      requirements: '/authn/token/requirements'
     }
   } = {}) {
     this.config = {urls};
@@ -114,6 +115,20 @@ export class TokenService {
     const salt = await this.getSalt({email, type});
     return hashChallenge({challenge, clientId, salt});
   }
+
+  async setAuthenticationRequirements({
+    url = this.config.urls.requirements, account, requiredAuthenticationMethods
+  }) {
+    assertString(account, 'account');
+    assertArray(requiredAuthenticationMethods, 'requiredAuthenticationMethods');
+
+    await axios.post(url, {
+      account, requiredAuthenticationMethods
+    }, {
+      headers: {'Accept': 'application/ld+json, application/json'}
+    });
+    return;
+  }
 }
 
 function validateTokenType(type) {
@@ -131,6 +146,12 @@ function assertString(x, name) {
 
 function assertOptionalString(x, name) {
   x === undefined || assertString(x, name);
+}
+
+function assertArray(x, name) {
+  if(!Array.isArray(x)) {
+    throw new TypeError(`"${name}" must be an array.`);
+  }
 }
 
 async function hashChallenge({challenge, clientId, salt = null}) {
