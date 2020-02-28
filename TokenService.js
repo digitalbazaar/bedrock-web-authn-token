@@ -14,7 +14,8 @@ export class TokenService {
       tokens: '/authn/tokens',
       authenticate: '/authn/token/authenticate',
       login: '/authn/token/login',
-      requirements: '/authn/token/requirements'
+      requirements: '/authn/token/requirements',
+      registration: '/authn/token/client/registration'
     }
   } = {}) {
     this.config = {urls};
@@ -24,6 +25,7 @@ export class TokenService {
     url = this.config.urls.tokens, account, email, type, clientId, password,
     authenticationMethod = type, requiredAuthenticationMethods = []
   }) {
+    assertString(url, 'url');
     assertOptionalString(account, 'account');
     assertOptionalString(email, 'email');
     assertOptionalString(clientId, 'clientId');
@@ -56,6 +58,7 @@ export class TokenService {
   }
 
   async getSalt({url = this.config.urls.tokens, email, type}) {
+    assertString(url, 'url');
     assertString(email, 'email');
     validateTokenType(type);
 
@@ -67,6 +70,7 @@ export class TokenService {
   }
 
   async remove({url = this.config.urls.tokens, account, type}) {
+    assertString(url, 'url');
     assertString(account, 'account');
     validateTokenType(type);
 
@@ -79,6 +83,7 @@ export class TokenService {
   async authenticate({
     url = this.config.urls.authenticate, email, type, challenge, clientId
   }) {
+    assertString(url, 'url');
     assertString(email, 'email');
     assertString(type, 'type');
     assertString(challenge, 'challenge');
@@ -118,7 +123,8 @@ export class TokenService {
 
   async setAuthenticationRequirements({
     url = this.config.urls.requirements, account, requiredAuthenticationMethods
-  }) {
+  } = {}) {
+    assertString(url, 'url');
     assertString(account, 'account');
     assertArray(requiredAuthenticationMethods, 'requiredAuthenticationMethods');
 
@@ -128,6 +134,18 @@ export class TokenService {
       headers: {'Accept': 'application/ld+json, application/json'}
     });
     return;
+  }
+
+  async isClientRegistered({
+    url = this.config.urls.registration, email
+  } = {}) {
+    assertString(url, 'url');
+    assertString(email, 'email');
+
+    const response = await axios.get(url, {
+      params: {email}
+    });
+    return response.data;
   }
 }
 
