@@ -105,7 +105,7 @@ export class TokenService {
     }, {
       headers: {'Accept': 'application/ld+json, application/json'}
     });
-    return {result: response.data, tokenHash: hash};
+    return {result: response.data, challengeHash: hash};
   }
 
   async login({url = this.config.urls.login} = {}) {
