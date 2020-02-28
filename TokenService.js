@@ -102,7 +102,7 @@ export class TokenService {
     return {result: response.data, tokenHash: hash};
   }
 
-  async login({url = this.config.urls.login}) {
+  async login({url = this.config.urls.login} = {}) {
     const response = await axios.post(url, {type: 'multifactor'}, {
       headers: {'Accept': 'application/ld+json, application/json'}
     });

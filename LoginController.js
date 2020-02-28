@@ -10,28 +10,39 @@ export class LoginController {
     this.state = {
       loading: false,
       email: null,
-      token: null
+      challenge: null
     };
     this.tokenService = new TokenService(tokenServiceConfig);
   }
 
-  async login({tokenType, clientId}) {
+  async authenticate({type, clientId}) {
     this.state.loading = true;
 
     try {
-      let token = this.state.token;
-      if(tokenType === 'nonce') {
-        // strip any whitespace from nonce
-        token = token.replace(/\s/g, '');
+      const {email} = this.state;
+      let {challenge} = this.state;
+      if(type !== 'password') {
+        // strip any whitespace from challenge
+        challenge = challenge.replace(/\s/g, '');
       }
 
-      const result = await this.tokenService.login({
-        email: this.state.email,
-        // phoneNumber: this.state.phoneNumber,
-        tokenType,
-        token,
+      const result = await this.tokenService.authenticate({
+        email,
+        type,
+        challenge,
         clientId
       });
+      return result;
+    } finally {
+      this.state.loading = false;
+    }
+  }
+
+  async login() {
+    this.state.loading = true;
+
+    try {
+      const result = await this.tokenService.login();
       return result;
     } finally {
       this.state.loading = false;
