@@ -23,12 +23,17 @@ export class TokenService {
 
   async create({
     url = this.config.urls.tokens, account, email, type, clientId, password,
-    authenticationMethod = type, requiredAuthenticationMethods = []
+    authenticationMethod = type, requiredAuthenticationMethods
   }) {
     assertString(url, 'url');
     assertOptionalString(account, 'account');
     assertOptionalString(email, 'email');
     assertOptionalString(clientId, 'clientId');
+    assertString(authenticationMethod, 'authenticationMethod');
+    if(requiredAuthenticationMethods) {
+      assertArray(
+        requiredAuthenticationMethods, 'requiredAuthenticationMethods');
+    }
     validateTokenType(type);
     if(!(account || email)) {
       throw new Error('Either "account" or "email" must be given.');
