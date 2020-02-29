@@ -7,6 +7,7 @@ import axios from 'axios';
 import bcrypt from 'bcryptjs';
 
 const TOKEN_TYPES = ['nonce', 'password'];
+const DEFAULT_HEADERS = {Accept: 'application/ld+json, application/json'};
 
 export class TokenService {
   constructor({
@@ -15,7 +16,8 @@ export class TokenService {
       authenticate: '/authn/token/authenticate',
       login: '/authn/token/login',
       requirements: '/authn/token/requirements',
-      registration: '/authn/token/client/registration'
+      registration: '/authn/token/client/registration',
+      recovery: '/authn/token/recovery'
     }
   } = {}) {
     this.config = {urls};
@@ -108,14 +110,14 @@ export class TokenService {
       hash,
       challenge
     }, {
-      headers: {'Accept': 'application/ld+json, application/json'}
+      headers: DEFAULT_HEADERS
     });
     return {result: response.data, challengeHash: hash};
   }
 
   async login({url = this.config.urls.login} = {}) {
     const response = await axios.post(url, {type: 'multifactor'}, {
-      headers: {'Accept': 'application/ld+json, application/json'}
+      headers: DEFAULT_HEADERS
     });
     return {result: response.data};
   }
@@ -136,7 +138,22 @@ export class TokenService {
     await axios.post(url, {
       account, requiredAuthenticationMethods
     }, {
-      headers: {'Accept': 'application/ld+json, application/json'}
+      headers: DEFAULT_HEADERS
+    });
+    return;
+  }
+
+  async setRecoveryEmail({
+    url = this.config.urls.recovery, account, recoveryEmail
+  } = {}) {
+    assertString(url, 'url');
+    assertString(account, 'account');
+    assertString(recoveryEmail, 'recoveryEmail');
+
+    await axios.post(url, {
+      account, recoveryEmail
+    }, {
+      headers: DEFAULT_HEADERS
     });
     return;
   }
