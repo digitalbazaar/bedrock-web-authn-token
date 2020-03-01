@@ -143,6 +143,20 @@ export class TokenService {
     return;
   }
 
+  async getAuthenticationRequirements({
+    url = this.config.urls.requirements, account
+  } = {}) {
+    assertString(url, 'url');
+    assertString(account, 'account');
+
+    const response = await axios.get(url, {
+      params: {account}
+    }, {
+      headers: DEFAULT_HEADERS
+    });
+    return response.data;
+  }
+
   async setRecoveryEmail({
     url = this.config.urls.recovery, account, recoveryEmail
   } = {}) {
