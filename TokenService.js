@@ -6,7 +6,7 @@
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 
-const TOKEN_TYPES = ['nonce', 'password'];
+const TOKEN_TYPES = ['nonce', 'password', 'totp'];
 const DEFAULT_HEADERS = {Accept: 'application/ld+json, application/json'};
 
 export class TokenService {
@@ -60,8 +60,8 @@ export class TokenService {
     payload.authenticationMethod = authenticationMethod;
     payload.requiredAuthenticationMethods = requiredAuthenticationMethods;
 
-    await axios.post(url + `/${type}`, payload);
-    return payload;
+    const response = await axios.post(url + `/${type}`, payload);
+    return {result: response.data};
   }
 
   async getSalt({url = this.config.urls.tokens, email, type}) {
@@ -81,7 +81,7 @@ export class TokenService {
     assertString(account, 'account');
     validateTokenType(type);
 
-    const response = await axios.delete(url + `/${type}`, null, {
+    const response = await axios.delete(url + `/${type}`, {
       params: {account}
     });
     return response.data;
@@ -91,6 +91,7 @@ export class TokenService {
     url = this.config.urls.authenticate, email, type, challenge, clientId
   }) {
     assertString(url, 'url');
+    // FIXME account or email?
     assertString(email, 'email');
     assertString(type, 'type');
     assertString(challenge, 'challenge');
