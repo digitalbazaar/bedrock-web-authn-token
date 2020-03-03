@@ -24,13 +24,14 @@ export class TokenService {
   }
 
   async create({
-    url = this.config.urls.tokens, account, email, type, clientId, password,
-    authenticationMethod = type, requiredAuthenticationMethods
+    url = this.config.urls.tokens, account, email, type, clientId, serviceId,
+    password, authenticationMethod = type, requiredAuthenticationMethods
   }) {
     assertString(url, 'url');
     assertOptionalString(account, 'account');
     assertOptionalString(email, 'email');
     assertOptionalString(clientId, 'clientId');
+    assertOptionalString(serviceId, 'serviceId');
     assertString(authenticationMethod, 'authenticationMethod');
     if(requiredAuthenticationMethods) {
       assertArray(
@@ -50,6 +51,11 @@ export class TokenService {
 
     if(clientId !== undefined) {
       payload.clientId = clientId;
+    }
+
+    // FIXME: default to hostname?
+    if(serviceId !== undefined) {
+      payload.serviceId = serviceId;
     }
 
     if(type === 'password') {
