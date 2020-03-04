@@ -147,7 +147,6 @@ export class TokenService {
     }, {
       headers: DEFAULT_HEADERS
     });
-    return;
   }
 
   async getAuthenticationRequirements({
