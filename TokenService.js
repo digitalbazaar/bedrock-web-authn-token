@@ -111,15 +111,19 @@ export class TokenService {
     }
 
     // POST for verification and to establish session
-    const response = await axios.post(url, {
-      email,
-      type,
-      hash,
-      challenge
-    }, {
-      headers: DEFAULT_HEADERS
-    });
-    return {result: response.data, challengeHash: hash};
+    try {
+      const response = await axios.post(url, {
+        email,
+        type,
+        hash,
+        challenge
+      }, {
+        headers: DEFAULT_HEADERS
+      });
+      return {result: response.data, challengeHash: hash};
+    } catch(e) {
+      _rethrowAxiosError(e);
+    }
   }
 
   async login({url = this.config.urls.login} = {}) {
@@ -224,4 +228,18 @@ async function hashChallenge({challenge, clientId, salt = null}) {
     challenge += `:${clientId}`;
   }
   return bcrypt.hash(challenge, salt);
+}
+
+function _rethrowAxiosError(error) {
+  if(error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    // FIXME: there may be better wrappers already created
+    if(error.response.data.message && error.response.data.type) {
+      const err = new Error(`${error.response.data.message}`);
+      err.name = err.type = error.response.data.type;
+      throw err;
+    }
+  }
+  throw new Error(error.message);
 }
