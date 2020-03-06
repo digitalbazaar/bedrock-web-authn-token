@@ -1,6 +1,6 @@
 # bedrock-web-authn-token ChangeLog
 
-## 2.0.0 - 2020-xx-xx
+## 2.0.0 - 2020-03-05
 
 ### Added
 - Add `authenticate` API.
