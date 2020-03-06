@@ -1,6 +1,6 @@
 {
   "name": "bedrock-web-authn-token",
-  "version": "1.1.1-0",
+  "version": "2.0.0",
   "description": "Token-based authentication for Bedrock Web Apps",
   "main": "index.js",
   "dependencies": {
