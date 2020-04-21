@@ -6,6 +6,11 @@
   "scripts": {
     "lint": "eslint ."
   },
+  "author": {
+    "name": "Digital Bazaar, Inc.",
+    "email": "support@digitalbazaar.com",
+    "url": "https://digitalbazaar.com"
+  },
   "dependencies": {
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3"
