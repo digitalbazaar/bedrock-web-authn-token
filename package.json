@@ -3,6 +3,9 @@
   "version": "2.0.1-0",
   "description": "Token-based authentication for Bedrock Web Apps",
   "module": "main.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
   "dependencies": {
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3"
