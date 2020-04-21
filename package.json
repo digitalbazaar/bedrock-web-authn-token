@@ -4,7 +4,7 @@
   "description": "Token-based authentication for Bedrock Web Apps",
   "main": "index.js",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
