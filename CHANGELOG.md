@@ -1,5 +1,12 @@
 # bedrock-web-authn-token ChangeLog
 
+## 2.2.0 - 2020-07-01
+
+### Changed
+- Update deps.
+- Update test deps.
+- Update CI workflow.
+
 ## 2.1.0 - 2020-04-21
 
 ### Added
