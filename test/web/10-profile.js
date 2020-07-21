@@ -14,6 +14,8 @@ const short_name = 'auth-test';
 describe('token API', function() {
   describe('create API', function() {
     describe('authenticated request', function() {
+      // there are 4 types: password, nonce, challenge, & totp
+      // creates a time-based one-time password
       it('should create a totp', async () => {
         const email = 'totp-test@example.com';
         let result, err, account = null;
@@ -34,6 +36,75 @@ describe('token API', function() {
         result.should.have.property('type');
         result.type.should.be.a('string');
         result.type.should.contain('totp');
+      });
+      // this currently returns a 403
+      it.skip('should create a password', async () => {
+        const email = 'password-test@example.com';
+        let result, err, account = null;
+        try {
+          account = await accountService.create({email});
+          ({result} = await tokenService.create({
+            account: account.id,
+            type: 'password',
+            challenge: 'test-password',
+            authenticationMethod: 'password',
+            serviceId: short_name
+          }));
+        } catch(e) {
+          err = e;
+        }
+        should.not.exist(err);
+        should.exist(result);
+        result.should.be.an('object');
+        result.should.have.property('type');
+        result.type.should.be.a('string');
+        result.type.should.contain('password');
+      });
+      it.skip('should create a nonce', async () => {
+        const email = 'password-test@example.com';
+        let result, err, account = null;
+        try {
+          account = await accountService.create({email});
+          ({result} = await tokenService.create({
+            account: account.id,
+            type: 'nonce',
+            challenge: 'test-password',
+            authenticationMethod: 'password',
+            serviceId: short_name
+          }));
+        } catch(e) {
+          err = e;
+        }
+        should.not.exist(err);
+        // note: this might not return any data
+        should.exist(result);
+        result.should.be.an('object');
+        result.should.have.property('type');
+        result.type.should.be.a('string');
+        result.type.should.contain('nonce');
+      });
+      it.skip('should create a challenge', async () => {
+        const email = 'password-test@example.com';
+        let result, err, account = null;
+        try {
+          account = await accountService.create({email});
+          ({result} = await tokenService.create({
+            account: account.id,
+            type: 'challenge',
+            challenge: 'test-password',
+            authenticationMethod: 'password',
+            serviceId: short_name
+          }));
+        } catch(e) {
+          err = e;
+        }
+        should.not.exist(err);
+        // note: this might not return any data
+        should.exist(result);
+        result.should.be.an('object');
+        result.should.have.property('type');
+        result.type.should.be.a('string');
+        result.type.should.contain('challenge');
       });
     }); // end authenticated request
     describe('unauthenticated request', function() {
