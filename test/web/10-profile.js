@@ -4,9 +4,12 @@
 
 import {TokenService} from 'bedrock-web-authn-token';
 import {AccountService} from 'bedrock-web-account';
+import {MemoryEngine} from 'bedrock-web-store';
+import {getSession, createSession} from 'bedrock-web-session';
 
 const tokenService = new TokenService();
 const accountService = new AccountService();
+const store = new MemoryEngine();
 const short_name = 'auth-test';
 
 // import mockData from './mock-data.js';
@@ -14,6 +17,13 @@ const short_name = 'auth-test';
 describe('token API', function() {
   describe('create API', function() {
     describe('authenticated request', function() {
+      let session = null;
+      before(async function() {
+        session = await createSession({id: 'session-test-id', store});
+      });
+      beforeEach(async function() {
+        await session.end();
+      });
       // there are 4 types: password, nonce, challenge, & totp
       // creates a time-based one-time password
       it('should create a totp', async () => {
@@ -60,28 +70,25 @@ describe('token API', function() {
         result.type.should.be.a('string');
         result.type.should.contain('password');
       });
-      it.skip('should create a nonce', async () => {
-        const email = 'password-test@example.com';
+      it('should create a nonce', async () => {
+        const email = 'nonce-test@example.com';
         let result, err, account = null;
         try {
           account = await accountService.create({email});
-          ({result} = await tokenService.create({
+          result = await tokenService.create({
             account: account.id,
             type: 'nonce',
-            challenge: 'test-password',
-            authenticationMethod: 'password',
-            serviceId: short_name
-          }));
+            authenticationMethod: 'email-nonce-challenge'
+          });
         } catch(e) {
           err = e;
         }
         should.not.exist(err);
         // note: this might not return any data
+        // FIXME: make sure that the nonce returns an empty result
         should.exist(result);
         result.should.be.an('object');
-        result.should.have.property('type');
-        result.type.should.be.a('string');
-        result.type.should.contain('nonce');
+        result.should.have.property('result');
       });
       it.skip('should create a challenge', async () => {
         const email = 'password-test@example.com';
