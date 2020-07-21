@@ -3,6 +3,9 @@
  */
 const bedrock = require('bedrock');
 require('bedrock-mongodb');
+require('bedrock-express');
+require('bedrock-session-http');
+require('bedrock-session-mongodb');
 require('bedrock-authn-token');
 require('bedrock-authn-token-http');
 require('bedrock-account');

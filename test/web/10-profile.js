@@ -3,9 +3,10 @@
  */
 
 import {TokenService} from 'bedrock-web-authn-token';
-import {RegisterController} from 'bedrock-web-account';
+import {AccountService} from 'bedrock-web-account';
 
 const tokenService = new TokenService();
+const accountService = new AccountService();
 const short_name = 'auth-test';
 
 // import mockData from './mock-data.js';
@@ -13,10 +14,6 @@ const short_name = 'auth-test';
 describe('token API', () => {
   describe('create API', () => {
     describe('unauthenticated request', () => {
-      let registerController = null;
-      beforeEach(function() {
-        registerController = new RegisterController();
-      });
       it('should not create a token with out "authenticationMethod"',
         async () => {
           let result, err = null;
@@ -35,11 +32,12 @@ describe('token API', () => {
           err.message.should.contain(
             '"authenticationMethod" must be a string.');
         });
-      it.skip('should create a totp', async () => {
-        registerController.state.email = 'totp-test@example.com';
-        let result, err = null;
+      it('should create a totp', async () => {
+        const email = 'totp-test@example.com';
+        let result, err, account = null;
         try {
-          const account = await registerController.register();
+          account = await accountService.create({email});
+console.log('created account calling on tokenService.create');
           result = await tokenService.create({
             account: account.id,
             type: 'totp',
@@ -50,8 +48,8 @@ describe('token API', () => {
 console.error(e);
           err = e;
         }
-        should.not.exist(result);
-        should.exist(err);
+        should.exist(result);
+        should.not.exist(err);
         err.should.have.property('name');
         err.name.should.be.a('string');
         err.name.should.equal('Error');
