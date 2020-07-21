@@ -11,11 +11,34 @@ const short_name = 'auth-test';
 
 // import mockData from './mock-data.js';
 
-describe('token API', () => {
-  describe('create API', () => {
-    describe('unauthenticated request', () => {
+describe('token API', function() {
+  describe('create API', function() {
+    describe('authenticated request', function() {
+      it('should create a totp', async () => {
+        const email = 'totp-test@example.com';
+        let result, err, account = null;
+        try {
+          account = await accountService.create({email});
+          ({result} = await tokenService.create({
+            account: account.id,
+            type: 'totp',
+            authenticationMethod: 'totp-challenge',
+            serviceId: short_name
+          }));
+        } catch(e) {
+          err = e;
+        }
+        should.not.exist(err);
+        should.exist(result);
+        result.should.be.an('object');
+        result.should.have.property('type');
+        result.type.should.be.a('string');
+        result.type.should.contain('totp');
+      });
+    }); // end authenticated request
+    describe('unauthenticated request', function() {
       it('should not create a token with out "authenticationMethod"',
-        async () => {
+        async function() {
           let result, err = null;
           try {
             result = await tokenService.create({authenticationMethod: null});
@@ -32,30 +55,6 @@ describe('token API', () => {
           err.message.should.contain(
             '"authenticationMethod" must be a string.');
         });
-      it('should create a totp', async () => {
-        const email = 'totp-test@example.com';
-        let result, err, account = null;
-        try {
-          account = await accountService.create({email});
-console.log('created account calling on tokenService.create');
-          result = await tokenService.create({
-            account: account.id,
-            type: 'totp',
-            authenticationMethod: 'totp-challenge',
-            serviceId: short_name
-          });
-        } catch(e) {
-console.error(e);
-          err = e;
-        }
-        should.exist(result);
-        should.not.exist(err);
-        err.should.have.property('name');
-        err.name.should.be.a('string');
-        err.name.should.equal('Error');
-        err.should.have.property('message');
-        err.message.should.be.a('string');
-      });
-    }); // end authenticated request
+    }); // end unauthenticated request
   }); // end create
 });
