@@ -6,6 +6,7 @@ import {TokenService} from 'bedrock-web-authn-token';
 import {AccountService} from 'bedrock-web-account';
 import {MemoryEngine} from 'bedrock-web-store';
 import {createSession} from 'bedrock-web-session';
+import {authenticator} from 'otplib';
 
 const tokenService = new TokenService();
 const accountService = new AccountService();
@@ -204,6 +205,28 @@ describe('token API', function() {
       }
       should.not.exist(err);
       should.exist(result);
+      result, err = null;
+      // this emulates totp apps like google authenticator
+      const challenge = authenticator.generate(result.secret);
+      try {
+        ({result} = await tokenService.authenticate(
+          {type: 'totp', email, challenge}));
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(err);
+      should.exist(result);
+      result.should.be.an('object');
+      result.should.have.property('account');
+      result.account.should.be.an('object');
+      result.account.should.have.property('email');
+      result.account.email.should.contain(email);
+      result.should.have.property('authenticated');
+      result.authenticated.should.be.a('boolean');
+      result.authenticated.should.equal(true);
+      result.should.have.property('authenticatedMethods');
+      result.authenticatedMethods.should.be.an('array');
+      result.authenticatedMethods.should.deep.equal(['totp-challenge']);
     });
     // FIXME the actual nonce is sent in a bedrock-event
     // you will need to await that event to login
