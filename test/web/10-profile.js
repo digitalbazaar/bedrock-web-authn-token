@@ -25,7 +25,9 @@ describe('token API', function() {
         await session.end();
       });
       // there are 4 types: password, nonce, challenge, & totp
-      // creates a time-based one-time password
+      // @see https://github.com/digitalbazaar/bedrock-authn-token/blob/
+      // 7a2d3d5f832c5ce4d665b6d80862c5cd7780c9c9/lib/helpers.js#L18-L28
+      // totp creates a time-based one-time password
       it('should create a totp', async () => {
         const email = 'totp-test@example.com';
         let result, err, account = null;
@@ -47,7 +49,6 @@ describe('token API', function() {
         result.type.should.be.a('string');
         result.type.should.contain('totp');
       });
-      // this currently returns a 403
       it('should create a password', async () => {
         const email = 'password-test@example.com';
         let result, err, account = null;
@@ -89,16 +90,19 @@ describe('token API', function() {
         result.should.be.an('object');
         result.should.have.property('result');
       });
+      // FIXME challenges have not been implemented yet:
+      // @see https://github.com/digitalbazaar/bedrock-authn-token/blob/
+      // 7a2d3d5f832c5ce4d665b6d80862c5cd7780c9c9/lib/index.js#L143-L145
       it.skip('should create a challenge', async () => {
-        const email = 'password-test@example.com';
+        const email = 'challenge-test@example.com';
         let result, err, account = null;
         try {
           account = await accountService.create({email});
           ({result} = await tokenService.create({
             account: account.id,
             type: 'challenge',
-            challenge: 'test-password',
-            authenticationMethod: 'password',
+            challenge: 'test-the-challenge',
+            authenticationMethod: 'test-challenge',
             serviceId: short_name
           }));
         } catch(e) {
