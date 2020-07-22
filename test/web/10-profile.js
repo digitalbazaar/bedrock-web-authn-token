@@ -5,7 +5,7 @@
 import {TokenService} from 'bedrock-web-authn-token';
 import {AccountService} from 'bedrock-web-account';
 import {MemoryEngine} from 'bedrock-web-store';
-import {getSession, createSession} from 'bedrock-web-session';
+import {createSession} from 'bedrock-web-session';
 
 const tokenService = new TokenService();
 const accountService = new AccountService();
@@ -48,27 +48,26 @@ describe('token API', function() {
         result.type.should.contain('totp');
       });
       // this currently returns a 403
-      it.skip('should create a password', async () => {
+      it('should create a password', async () => {
         const email = 'password-test@example.com';
         let result, err, account = null;
         try {
           account = await accountService.create({email});
-          ({result} = await tokenService.create({
+          result = await tokenService.create({
             account: account.id,
             type: 'password',
-            challenge: 'test-password',
+            password: 'test-password',
             authenticationMethod: 'password',
             serviceId: short_name
-          }));
+          });
         } catch(e) {
           err = e;
         }
         should.not.exist(err);
+        // FIXME ensure password should return an empty result
         should.exist(result);
         result.should.be.an('object');
-        result.should.have.property('type');
-        result.type.should.be.a('string');
-        result.type.should.contain('password');
+        result.should.have.property('result');
       });
       it('should create a nonce', async () => {
         const email = 'nonce-test@example.com';
