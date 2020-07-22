@@ -138,4 +138,77 @@ describe('token API', function() {
         });
     }); // end unauthenticated request
   }); // end create
+  describe('authenticate API', function() {
+    let session = null;
+    before(async function() {
+      session = await createSession({id: 'session-test-auth-id', store});
+    });
+    beforeEach(async function() {
+      await session.end();
+    });
+    it('should authenticate with a password', async function() {
+      const email = 'password-auth-test@example.com';
+      const password = 'Test0123456789!!!';
+      let result, err, account = null;
+      try {
+        account = await accountService.create({email});
+        result = await tokenService.create({
+          account: account.id,
+          type: 'password',
+          password,
+          authenticationMethod: 'password',
+          serviceId: short_name
+        });
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(err);
+      // FIXME ensure password should return an empty result
+      should.exist(result);
+      result.should.be.an('object');
+      result.should.have.property('result');
+      result, err = null;
+      try {
+        ({result} = await tokenService.authenticate(
+          {email, type: 'password', challenge: password}));
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(err);
+      should.exist(result);
+      result.should.be.an('object');
+      result.should.have.property('account');
+      result.account.should.be.an('object');
+      result.account.should.have.property('email');
+      result.account.email.should.contain(email);
+      result.should.have.property('authenticated');
+      result.authenticated.should.be.a('boolean');
+      result.authenticated.should.equal(true);
+      result.should.have.property('authenticatedMethods');
+      result.authenticatedMethods.should.be.an('array');
+      result.authenticatedMethods.should.deep.equal(['password']);
+    });
+    it('should authenticate with a totp', async function() {
+      const email = 'totp-auth-test@example.com';
+      let result, err, account = null;
+      try {
+        account = await accountService.create({email});
+        ({result} = await tokenService.create({
+          account: account.id,
+          type: 'totp',
+          authenticationMethod: 'totp-challenge',
+          serviceId: short_name
+        }));
+      } catch(e) {
+        err = e;
+      }
+      should.not.exist(err);
+      should.exist(result);
+    });
+    // FIXME the actual nonce is sent in a bedrock-event
+    // you will need to await that event to login
+    it.skip('should authenticate a nonce', async function() {
+
+    });
+  });
 });
