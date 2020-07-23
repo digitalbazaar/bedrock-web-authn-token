@@ -22,7 +22,8 @@ describe('token API', function() {
       before(async function() {
         session = await createSession({id: 'session-test-id', store});
       });
-      beforeEach(async function() {
+      afterEach(async function() {
+        // logout after each test
         await session.end();
       });
       // there are 4 types: password, nonce, challenge, & totp

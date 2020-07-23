@@ -15,11 +15,15 @@ const short_name = 'login-test';
 
 describe('login API', function() {
   let session = null;
-  beforeEach(async function() {
+  before(async function() {
     session = await createSession({id: 'session-login-test-id', store});
+  });
+  afterEach(async function() {
+    // logout after each test
     await session.end();
   });
-  it('should login with a totp & password', async function() {
+
+  it.skip('should login with a totp & password', async function() {
     const email = 'password-totp-login-test@example.com';
     const password = 'Test0123456789!!!';
     const results = {
@@ -29,7 +33,6 @@ describe('login API', function() {
     let err, account = null;
     try {
       account = await accountService.create({email});
-/*
       await tokenService.setAuthenticationRequirements({
         account: account.id,
         requiredAuthenticationMethods: [
@@ -37,7 +40,6 @@ describe('login API', function() {
           'password-test'
         ]
       });
-*/
       results.totp = await tokenService.create({
         account: account.id,
         type: 'totp',
