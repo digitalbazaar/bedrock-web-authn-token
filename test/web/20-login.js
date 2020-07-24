@@ -4,19 +4,18 @@
 
 import {TokenService} from 'bedrock-web-authn-token';
 import {AccountService} from 'bedrock-web-account';
-import {MemoryEngine} from 'bedrock-web-store';
-import {createSession} from 'bedrock-web-session';
+import {getSession} from 'bedrock-web-session';
 import {authenticator} from 'otplib';
+import {store} from './helpers.js';
 
 const tokenService = new TokenService();
 const accountService = new AccountService();
-const store = new MemoryEngine();
 const short_name = 'login-test';
 
 describe('login API', function() {
   let session = null;
-  before(async function() {
-    session = await createSession({id: 'session-login-test-id', store});
+  beforeEach(async function() {
+    session = await getSession({id: 'session-test-id', store});
   });
   afterEach(async function() {
     // logout after each test

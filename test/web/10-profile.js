@@ -4,13 +4,12 @@
 
 import {TokenService} from 'bedrock-web-authn-token';
 import {AccountService} from 'bedrock-web-account';
-import {MemoryEngine} from 'bedrock-web-store';
-import {createSession} from 'bedrock-web-session';
+import {getSession} from 'bedrock-web-session';
 import {authenticator} from 'otplib';
+import {store} from './helpers.js';
 
 const tokenService = new TokenService();
 const accountService = new AccountService();
-const store = new MemoryEngine();
 const short_name = 'auth-test';
 
 // import mockData from './mock-data.js';
@@ -19,8 +18,8 @@ describe('token API', function() {
   describe('create API', function() {
     describe('authenticated request', function() {
       let session = null;
-      before(async function() {
-        session = await createSession({id: 'session-test-id', store});
+      beforeEach(async function() {
+        session = await getSession({id: 'session-test-id', store});
       });
       afterEach(async function() {
         // logout after each test
@@ -142,8 +141,8 @@ describe('token API', function() {
   }); // end create
   describe('authenticate API', function() {
     let session = null;
-    before(async function() {
-      session = await createSession({id: 'session-test-auth-id', store});
+    beforeEach(async function() {
+      session = await getSession({id: 'session-test-auth-id', store});
     });
     beforeEach(async function() {
       await session.end();
