@@ -12,8 +12,6 @@ const tokenService = new TokenService();
 const accountService = new AccountService();
 const short_name = 'auth-test';
 
-// import mockData from './mock-data.js';
-
 describe('token API', function() {
   describe('create API', function() {
     describe('authenticated request', function() {

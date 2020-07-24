@@ -15,7 +15,9 @@ const short_name = 'login-test';
 describe('login API', function() {
   let session = null;
   beforeEach(async function() {
-    session = await getSession({id: 'session-test-id', store});
+    session = await getSession({id: 'session-test-login-id', store});
+    // ensure we logout tests from other suites
+    await session.end();
   });
   afterEach(async function() {
     // logout after each test
