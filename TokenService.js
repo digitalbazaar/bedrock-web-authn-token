@@ -64,6 +64,7 @@ export class TokenService {
 
     payload.authenticationMethod = authenticationMethod;
     payload.requiredAuthenticationMethods = requiredAuthenticationMethods;
+
     const response = await axios.post(url + `/${type}`, payload);
     return {result: response.data};
   }
