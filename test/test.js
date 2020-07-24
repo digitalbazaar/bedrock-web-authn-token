@@ -12,17 +12,6 @@ require('bedrock-account');
 require('bedrock-account-http');
 require('bedrock-https-agent');
 require('bedrock-security-context');
-
-const brPassport = require('bedrock-passport');
-const mockData = require('./web/mock-data');
-brPassport.optionallyAuthenticated = (req, res, next) => {
-  req.user = {
-    account: {},
-    actor: mockData.actors.alpha
-  };
-  next();
-};
-
 require('bedrock-test');
 require('bedrock-karma');
 

@@ -24,7 +24,7 @@ describe('login API', function() {
     await session.end();
   });
 
-  it.skip('should login with a totp & password', async function() {
+  it('should login with a totp & password', async function() {
     const email = 'password-totp-login-test@example.com';
     const password = 'Test0123456789!!!';
     const results = {
@@ -68,7 +68,6 @@ describe('login API', function() {
       password: null,
       totp: null
     };
-    console.log('totp result', results.totp.result);
     const challenge = authenticator.generate(results.totp.result.secret);
     try {
       authResults.totp = await tokenService.authenticate(
@@ -87,5 +86,18 @@ describe('login API', function() {
     authResults.password.result.should.have.property('authenticated');
     authResults.password.result.authenticated.should.be.a('boolean');
     authResults.password.result.authenticated.should.equal(true);
+    let result = null;
+    err = null;
+    try {
+      ({result} = await tokenService.login());
+    } catch(e) {
+      err = e;
+    }
+    should.not.exist(err);
+    should.exist(result);
+    result.should.be.an('object');
+    result.should.have.property('account');
+    result.account.should.be.a('string');
+    result.account.should.equal(account.id);
   });
 });
