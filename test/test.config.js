@@ -6,6 +6,8 @@
 const {config} = require('bedrock');
 const path = require('path');
 
+const {permissions, roles} = config.permission;
+
 config.karma.suites['bedrock-web-kms'] = path.join('web', '**', '*.js');
 
 config.karma.config.proxies = {
@@ -24,3 +26,22 @@ config.mongodb.dropCollections.collections = [];
 
 // allow self-signed certs in test framework
 config['https-agent'].rejectUnauthorized = false;
+
+// setting this automatically creates login sessions for the tests when new
+// accounts are created
+config['account-http'].autoLoginNewAccounts = true;
+
+config.express.session.secret = 'NOTASECRET';
+config.express.session.key = 'web-authn-token-test-session';
+config.express.session.prefix = 'web-authn-token-test';
+
+roles['account.registered'] = {
+  id: 'account.registered',
+  label: 'Account Test Role',
+  comment: 'Role for Test User',
+  sysPermission: [
+    permissions.ACCOUNT_ACCESS.id,
+    permissions.ACCOUNT_UPDATE.id,
+    permissions.ACCOUNT_INSERT.id
+  ]
+};
