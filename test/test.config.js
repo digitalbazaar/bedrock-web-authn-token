@@ -27,7 +27,8 @@ config.mongodb.dropCollections.collections = [];
 // allow self-signed certs in test framework
 config['https-agent'].rejectUnauthorized = false;
 
-// this needs to be true in order to set auth stuff
+// setting this automatically creates login sessions for the tests when new
+// accounts are created
 config['account-http'].autoLoginNewAccounts = true;
 
 config.express.session.secret = 'NOTASECRET';
