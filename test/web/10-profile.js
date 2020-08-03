@@ -117,7 +117,7 @@ describe('token API', function() {
       });
     }); // end authenticated request
     describe('unauthenticated request', function() {
-      it('should not create a token with out "authenticationMethod"',
+      it('should not create a token without "authenticationMethod"',
         async function() {
           let result, err = null;
           try {
