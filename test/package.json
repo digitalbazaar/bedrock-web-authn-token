@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "bedrock": "^3.1.1",
-    "bedrock-account": "^4.0.0",
+    "bedrock-account": "github:digitalbazaar/bedrock-account#unique-email-field",
     "bedrock-account-http": "^1.7.0",
-    "bedrock-authn-token": "^2.2.1",
-    "bedrock-authn-token-http": "^1.3.0",
+    "bedrock-authn-token": "github:digitalbazaar/bedrock-authn-token#fix-verify",
+    "bedrock-authn-token-http": "github:digitalbazaar/bedrock-authn-token-http#setup-tests-and-cookie",
     "bedrock-express": "^3.2.0",
     "bedrock-https-agent": "^1.1.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
