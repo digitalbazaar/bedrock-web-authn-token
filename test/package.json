@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "bedrock": "^3.1.1",
-    "bedrock-account": "github:digitalbazaar/bedrock-account#unique-email-field",
+    "bedrock-account": "^5.0.0",
     "bedrock-account-http": "^1.7.0",
     "bedrock-authn-token": "github:digitalbazaar/bedrock-authn-token#fix-verify",
     "bedrock-authn-token-http": "github:digitalbazaar/bedrock-authn-token-http#setup-tests-and-cookie",
