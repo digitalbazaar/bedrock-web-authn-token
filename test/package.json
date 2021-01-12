@@ -10,9 +10,9 @@
   "dependencies": {
     "bedrock": "^3.1.1",
     "bedrock-account": "^5.0.0",
-    "bedrock-account-http": "^1.7.0",
-    "bedrock-authn-token": "github:digitalbazaar/bedrock-authn-token#fix-verify",
-    "bedrock-authn-token-http": "github:digitalbazaar/bedrock-authn-token-http#setup-tests-and-cookie",
+    "bedrock-account-http": "^2.0.0",
+    "bedrock-authn-token": "^3.0.0",
+    "bedrock-authn-token-http": "^1.4.1",
     "bedrock-express": "^3.2.0",
     "bedrock-https-agent": "^1.1.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
