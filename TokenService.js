@@ -5,7 +5,7 @@
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 
-const TOKEN_TYPES = ['nonce', 'password', 'totp'];
+const TOKEN_TYPES = ['nonce', 'password', 'totp', 'oidc'];
 const DEFAULT_HEADERS = {Accept: 'application/ld+json, application/json'};
 
 export class TokenService {
@@ -24,7 +24,8 @@ export class TokenService {
 
   async create({
     url = this.config.urls.tokens, account, email, type, clientId, serviceId,
-    password, authenticationMethod = type, requiredAuthenticationMethods
+    password, authenticationMethod = type, requiredAuthenticationMethods,
+    oidcUserId
   }) {
     assertString(url, 'url');
     assertOptionalString(account, 'account');
@@ -60,6 +61,8 @@ export class TokenService {
     if(type === 'password') {
       assertString(password, 'password');
       payload.hash = await hashChallenge({challenge: password});
+    } else if(type === 'oidc') {
+      payload.userId = oidcUserId;
     }
 
     payload.authenticationMethod = authenticationMethod;
