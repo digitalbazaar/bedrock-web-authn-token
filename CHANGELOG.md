@@ -1,5 +1,10 @@
 # bedrock-web-authn-token ChangeLog
 
+## 2.3.0 - 2021-03-TBD
+
+### Changed
+- Use `bedrock-web-account@2.0.0`.
+
 ## 2.2.0 - 2020-07-01
 
 ### Changed
