@@ -32,7 +32,9 @@ export class TokenService {
     assertOptionalString(email, 'email');
     assertOptionalString(clientId, 'clientId');
     assertOptionalString(serviceId, 'serviceId');
+    assertOptionalObject(typeOptions, 'typeOptions');
     assertString(authenticationMethod, 'authenticationMethod');
+
     if(requiredAuthenticationMethods) {
       assertArray(
         requiredAuthenticationMethods, 'requiredAuthenticationMethods');
@@ -214,6 +216,16 @@ function assertString(x, name) {
 
 function assertOptionalString(x, name) {
   x === undefined || assertString(x, name);
+}
+
+function assertObject(x, name) {
+  if(typeof x !== 'object') {
+    throw new TypeError(`"${name}" must be an object.`);
+  }
+}
+
+function assertOptionalObject(x, name) {
+  x === undefined || assertObject(x, name);
 }
 
 function assertArray(x, name) {
