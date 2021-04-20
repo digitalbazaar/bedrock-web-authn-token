@@ -24,7 +24,8 @@ export class TokenService {
 
   async create({
     url = this.config.urls.tokens, account, email, type, clientId, serviceId,
-    password, authenticationMethod = type, requiredAuthenticationMethods
+    password, authenticationMethod = type, requiredAuthenticationMethods,
+    typeOptions
   }) {
     assertString(url, 'url');
     assertOptionalString(account, 'account');
@@ -60,6 +61,10 @@ export class TokenService {
     if(type === 'password') {
       assertString(password, 'password');
       payload.hash = await hashChallenge({challenge: password});
+    }
+
+    if(typeOptions) {
+      payload.typeOptions = typeOptions;
     }
 
     payload.authenticationMethod = authenticationMethod;
