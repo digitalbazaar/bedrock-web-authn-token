@@ -29,7 +29,9 @@ describe('token API', function() {
       // totp creates a time-based one-time password
       it('should create a totp', async () => {
         const email = 'totp-test@example.com';
-        let result, err, account = null;
+        let result;
+        let err;
+        let account = null;
         try {
           account = await accountService.create({email});
           ({result} = await tokenService.create({
@@ -50,7 +52,9 @@ describe('token API', function() {
       });
       it('should create a password', async () => {
         const email = 'password-test@example.com';
-        let result, err, account = null;
+        let result;
+        let err;
+        let account = null;
         try {
           account = await accountService.create({email});
           result = await tokenService.create({
@@ -71,7 +75,9 @@ describe('token API', function() {
       });
       it('should create a nonce', async () => {
         const email = 'nonce-test@example.com';
-        let result, err, account = null;
+        let result;
+        let err;
+        let account = null;
         try {
           account = await accountService.create({email});
           result = await tokenService.create({
@@ -94,7 +100,9 @@ describe('token API', function() {
       // 7a2d3d5f832c5ce4d665b6d80862c5cd7780c9c9/lib/index.js#L143-L145
       it.skip('should create a challenge', async () => {
         const email = 'challenge-test@example.com';
-        let result, err, account = null;
+        let result;
+        let err;
+        let account = null;
         try {
           account = await accountService.create({email});
           ({result} = await tokenService.create({
@@ -119,7 +127,8 @@ describe('token API', function() {
     describe('unauthenticated request', function() {
       it('should not create a token without "authenticationMethod"',
         async function() {
-          let result, err = null;
+          let result;
+          let err = null;
           try {
             result = await tokenService.create({authenticationMethod: null});
           } catch(e) {
@@ -148,7 +157,9 @@ describe('token API', function() {
     it('should authenticate with a password', async function() {
       const email = 'password-auth-test@example.com';
       const password = 'Test0123456789!!!';
-      let result, err, account = null;
+      let result;
+      let err;
+      let account = null;
       try {
         account = await accountService.create({email});
         result = await tokenService.create({
@@ -189,7 +200,9 @@ describe('token API', function() {
     });
     it('should authenticate with a totp', async function() {
       const email = 'totp-auth-test@example.com';
-      let result, err, account = null;
+      let result;
+      let err;
+      let account = null;
       try {
         account = await accountService.create({email});
         ({result} = await tokenService.create({
@@ -230,7 +243,9 @@ describe('token API', function() {
     // you will need to await that event to login
     it.skip('should authenticate with a nonce', async function() {
       const email = 'nonce-auth-test@example.com';
-      let result, err, account = null;
+      let result;
+      let err;
+      let account = null;
       try {
         account = await accountService.create({email});
         result = await tokenService.create({
