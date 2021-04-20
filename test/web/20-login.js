@@ -31,7 +31,8 @@ describe('login API', function() {
       password: null,
       totp: null
     };
-    let err, account = null;
+    let err;
+    let account = null;
     try {
       account = await accountService.create({email});
       await tokenService.setAuthenticationRequirements({
