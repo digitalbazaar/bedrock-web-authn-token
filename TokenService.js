@@ -234,7 +234,6 @@ function assertArray(x, name) {
 }
 
 async function hashChallenge({challenge, salt = null}) {
-  console.log({challenge, salt})
   // TODO: receive required number of rounds from backend config
   const rounds = 10;
   if(salt === null) {
