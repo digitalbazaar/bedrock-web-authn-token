@@ -1,6 +1,6 @@
 # bedrock-web-authn-token ChangeLog
 
-## 2.4.0 - 2021-04-TBD
+## 2.4.0 - 2021-04-21
 
 ### Changed
 - Create api now takes an optional `typeOptions` param.
