@@ -100,19 +100,18 @@ export class TokenService {
   }
 
   async authenticate({
-    url = this.config.urls.authenticate, email, type, challenge, clientId
+    url = this.config.urls.authenticate, email, type, challenge
   }) {
     assertString(url, 'url');
     // FIXME account or email?
     assertString(email, 'email');
     assertString(type, 'type');
     assertString(challenge, 'challenge');
-    assertOptionalString(clientId, 'clientId');
 
     // hash challenge for these token types
     let hash;
     if(type === 'nonce' || type === 'password') {
-      hash = await this.hashChallenge({email, type, challenge, clientId});
+      hash = await this.hashChallenge({email, type, challenge});
       challenge = undefined;
     }
 
@@ -139,10 +138,10 @@ export class TokenService {
     return {result: response.data};
   }
 
-  async hashChallenge({email, type, challenge, clientId}) {
+  async hashChallenge({email, type, challenge}) {
     // get user's salt for bcrypt hash computation
     const salt = await this.getSalt({email, type});
-    return hashChallenge({challenge, clientId, salt});
+    return hashChallenge({challenge, salt});
   }
 
   async setAuthenticationRequirements({
@@ -234,14 +233,12 @@ function assertArray(x, name) {
   }
 }
 
-async function hashChallenge({challenge, clientId, salt = null}) {
+async function hashChallenge({challenge, salt = null}) {
+  console.log({challenge, salt})
   // TODO: receive required number of rounds from backend config
   const rounds = 10;
   if(salt === null) {
     salt = await bcrypt.genSalt(rounds);
-  }
-  if(clientId !== undefined) {
-    challenge += `:${clientId}`;
   }
   return bcrypt.hash(challenge, salt);
 }
