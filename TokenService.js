@@ -23,14 +23,13 @@ export class TokenService {
   }
 
   async create({
-    url = this.config.urls.tokens, account, email, type, clientId, serviceId,
+    url = this.config.urls.tokens, account, email, type, serviceId,
     password, authenticationMethod = type, requiredAuthenticationMethods,
     typeOptions
   }) {
     assertString(url, 'url');
     assertOptionalString(account, 'account');
     assertOptionalString(email, 'email');
-    assertOptionalString(clientId, 'clientId');
     assertOptionalString(serviceId, 'serviceId');
     assertOptionalObject(typeOptions, 'typeOptions');
     assertString(authenticationMethod, 'authenticationMethod');
@@ -49,10 +48,6 @@ export class TokenService {
       payload.account = account;
     } else {
       payload.email = email;
-    }
-
-    if(clientId !== undefined) {
-      payload.clientId = clientId;
     }
 
     // FIXME: default to hostname?
