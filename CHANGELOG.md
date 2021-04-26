@@ -1,5 +1,10 @@
 # bedrock-web-authn-token ChangeLog
 
+## 2.5.0 - 2021-04-26
+
+### Changed
+- Remove optional `clientId` from all apis.
+
 ## 2.4.0 - 2021-04-21
 
 ### Changed
