@@ -12,7 +12,7 @@
     "url": "https://digitalbazaar.com"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "@digitalbazaar/http-client": "^1.0.0",
     "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
