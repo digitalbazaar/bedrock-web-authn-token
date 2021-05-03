@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2020 Digital Bazaar, Inc. All rights reserved.
  */
 
-import axios from 'axios';
+import {httpClient} from '@digitalbazaar/http-client';
 import bcrypt from 'bcryptjs';
 
 const TOKEN_TYPES = ['nonce', 'password', 'totp'];
@@ -67,12 +67,8 @@ export class TokenService {
     payload.authenticationMethod = authenticationMethod;
     payload.requiredAuthenticationMethods = requiredAuthenticationMethods;
 
-    try {
-      const response = await axios.post(url + `/${type}`, payload);
-      return {result: response.data};
-    } catch(e) {
-      _rethrowAxiosError(e);
-    }
+    const response = await httpClient.post(url + `/${type}`, {json: payload});
+    return {result: response.data};
   }
 
   async getSalt({url = this.config.urls.tokens, email, type}) {
@@ -80,8 +76,8 @@ export class TokenService {
     assertString(email, 'email');
     validateTokenType(type);
 
-    const response = await axios.get(url + `/${type}/salt`, {
-      params: {email}
+    const response = await httpClient.get(url + `/${type}/salt`, {
+      searchParams: {email}
     });
     const {salt} = response.data;
     return salt;
@@ -92,8 +88,8 @@ export class TokenService {
     assertString(account, 'account');
     validateTokenType(type);
 
-    const response = await axios.delete(url + `/${type}`, {
-      params: {account}
+    const response = await httpClient.delete(url + `/${type}`, {
+      searchParams: {account}
     });
     return response.data;
   }
@@ -115,23 +111,21 @@ export class TokenService {
     }
 
     // POST for verification and to establish session
-    try {
-      const response = await axios.post(url, {
+    const response = await httpClient.post(url, {
+      json: {
         email,
         type,
         hash,
         challenge
-      }, {
-        headers: DEFAULT_HEADERS
-      });
-      return {result: response.data, challengeHash: hash};
-    } catch(e) {
-      _rethrowAxiosError(e);
-    }
+      },
+      headers: DEFAULT_HEADERS
+    });
+    return {result: response.data, challengeHash: hash};
   }
 
   async login({url = this.config.urls.login} = {}) {
-    const response = await axios.post(url, {type: 'multifactor'}, {
+    const response = await httpClient.post(url, {
+      json: {type: 'multifactor'},
       headers: DEFAULT_HEADERS
     });
     return {result: response.data};
@@ -150,9 +144,8 @@ export class TokenService {
     assertString(account, 'account');
     assertArray(requiredAuthenticationMethods, 'requiredAuthenticationMethods');
 
-    await axios.post(url, {
-      account, requiredAuthenticationMethods
-    }, {
+    await httpClient.post(url, {
+      json: {account, requiredAuthenticationMethods},
       headers: DEFAULT_HEADERS
     });
   }
@@ -163,9 +156,8 @@ export class TokenService {
     assertString(url, 'url');
     assertString(account, 'account');
 
-    const response = await axios.get(url, {
-      params: {account}
-    }, {
+    const response = await httpClient.get(url, {
+      searchParams: {account},
       headers: DEFAULT_HEADERS
     });
     return response.data;
@@ -178,9 +170,8 @@ export class TokenService {
     assertString(account, 'account');
     assertString(recoveryEmail, 'recoveryEmail');
 
-    await axios.post(url, {
-      account, recoveryEmail
-    }, {
+    await httpClient.post(url, {
+      json: {account, recoveryEmail},
       headers: DEFAULT_HEADERS
     });
     return;
@@ -192,8 +183,8 @@ export class TokenService {
     assertString(url, 'url');
     assertString(email, 'email');
 
-    const response = await axios.get(url, {
-      params: {email}
+    const response = await httpClient.get(url, {
+      searchParams: {email}
     });
     return response.data;
   }
@@ -239,18 +230,4 @@ async function hashChallenge({challenge, salt = null}) {
     salt = await bcrypt.genSalt(rounds);
   }
   return bcrypt.hash(challenge, salt);
-}
-
-function _rethrowAxiosError(error) {
-  if(error.response) {
-    // The request was made and the server responded with a status code
-    // that falls out of the range of 2xx
-    // FIXME: there may be better wrappers already created
-    if(error.response.data.message && error.response.data.type) {
-      const err = new Error(`${error.response.data.message}`);
-      err.name = err.type = error.response.data.type;
-      throw err;
-    }
-  }
-  throw new Error(error.message);
 }
