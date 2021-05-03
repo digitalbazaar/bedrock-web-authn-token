@@ -67,8 +67,12 @@ export class TokenService {
     payload.authenticationMethod = authenticationMethod;
     payload.requiredAuthenticationMethods = requiredAuthenticationMethods;
 
-    const response = await axios.post(url + `/${type}`, payload);
-    return {result: response.data};
+    try {
+      const response = await axios.post(url + `/${type}`, payload);
+      return {result: response.data};
+    } catch(e) {
+      _rethrowAxiosError(e);
+    }
   }
 
   async getSalt({url = this.config.urls.tokens, email, type}) {
