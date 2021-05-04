@@ -3,6 +3,9 @@
 ## 2.5.0 - 2021-04-26
 
 ### Changed
+- Replace `axios` with `@digitalbazaar/http-client`.
+
+### Removed
 - Remove optional `clientId` from all apis.
 
 ## 2.4.0 - 2021-04-21
