@@ -2,8 +2,8 @@
  * Copyright (c) 2018-2020 Digital Bazaar, Inc. All rights reserved.
  */
 
-import {httpClient} from '@digitalbazaar/http-client';
 import bcrypt from 'bcryptjs';
+import {httpClient} from '@digitalbazaar/http-client';
 
 const TOKEN_TYPES = ['nonce', 'password', 'totp'];
 const DEFAULT_HEADERS = {Accept: 'application/ld+json, application/json'};
