@@ -1,6 +1,6 @@
 # bedrock-web-authn-token ChangeLog
 
-## 2.5.0 - 2021-04-26
+## 2.5.0 - 2021-05-07
 
 ### Changed
 - Replace `axios` with `@digitalbazaar/http-client`.
