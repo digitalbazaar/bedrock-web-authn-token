@@ -28,7 +28,7 @@
     "bedrock-validation": "^4.4.0",
     "bedrock-web-account": "^2.0.0",
     "bedrock-web-authn-token": "file:..",
-    "bedrock-web-session": "^1.5.1",
+    "bedrock-web-session": "^2.0.0",
     "otplib": "^12.0.1"
   }
 }
