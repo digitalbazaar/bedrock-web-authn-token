@@ -12,7 +12,7 @@
     "bedrock-account": "^6.1.0",
     "bedrock-account-http": "^4.0.0",
     "bedrock-authn-token": "^7.0.0",
-    "bedrock-authn-token-http": "^3.0.0",
+    "bedrock-authn-token-http": "^4.0.1",
     "bedrock-express": "^6.3.0",
     "bedrock-https-agent": "^2.2.0",
     "bedrock-karma": "^2.2.0",
