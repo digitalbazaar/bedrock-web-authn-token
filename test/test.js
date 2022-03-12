@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2019-2020 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 const bedrock = require('bedrock');
 require('bedrock-mongodb');
@@ -11,7 +11,6 @@ require('bedrock-authn-token-http');
 require('bedrock-account');
 require('bedrock-account-http');
 require('bedrock-https-agent');
-require('bedrock-security-context');
 require('bedrock-test');
 require('bedrock-karma');
 

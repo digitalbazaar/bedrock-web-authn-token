@@ -1,21 +1,20 @@
 /*!
- * Copyright (c) 2019-2020 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-
-import {TokenService} from 'bedrock-web-authn-token';
 import {AccountService} from 'bedrock-web-account';
-import {getSession} from 'bedrock-web-session';
 import {authenticator} from 'otplib';
-import {store} from './helpers.js';
+import {createSession, session} from 'bedrock-web-session';
+import {TokenService} from 'bedrock-web-authn-token';
 
 const tokenService = new TokenService();
 const accountService = new AccountService();
 const short_name = 'login-test';
 
 describe('login API', function() {
-  let session = null;
-  beforeEach(async function() {
-    session = await getSession({id: 'session-test-login-id', store});
+  before(async function() {
+    if(!session) {
+      await createSession();
+    }
     // ensure we logout tests from other suites
     await session.end();
   });

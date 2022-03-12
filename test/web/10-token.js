@@ -1,28 +1,30 @@
 /*!
- * Copyright (c) 2019-2020 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-
-import {TokenService} from 'bedrock-web-authn-token';
 import {AccountService} from 'bedrock-web-account';
-import {getSession} from 'bedrock-web-session';
 import {authenticator} from 'otplib';
-import {store} from './helpers.js';
+import {createSession, session} from 'bedrock-web-session';
+import {TokenService} from 'bedrock-web-authn-token';
 
 const tokenService = new TokenService();
 const accountService = new AccountService();
 const short_name = 'auth-test';
 
 describe('token API', function() {
+  before(async function() {
+    if(!session) {
+      await createSession();
+    }
+    // ensure we logout tests from other suites
+    await session.end();
+  });
+  afterEach(async function() {
+    // logout after each test
+    await session.end();
+  });
+
   describe('create API', function() {
     describe('authenticated request', function() {
-      let session = null;
-      beforeEach(async function() {
-        session = await getSession({id: 'session-test-id', store});
-      });
-      afterEach(async function() {
-        // logout after each test
-        await session.end();
-      });
       // there are 4 types: password, nonce, challenge, & totp
       // @see https://github.com/digitalbazaar/bedrock-authn-token/blob/
       // 7a2d3d5f832c5ce4d665b6d80862c5cd7780c9c9/lib/helpers.js#L18-L28
@@ -147,13 +149,6 @@ describe('token API', function() {
     }); // end unauthenticated request
   }); // end create
   describe('authenticate API', function() {
-    let session = null;
-    beforeEach(async function() {
-      session = await getSession({id: 'session-test-auth-id', store});
-    });
-    beforeEach(async function() {
-      await session.end();
-    });
     it('should authenticate with a password', async function() {
       const email = 'password-auth-test@example.com';
       const password = 'Test0123456789!!!';

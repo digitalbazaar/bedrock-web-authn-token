@@ -1,12 +1,10 @@
 /*!
- * Copyright (c) 2019-2020 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
 const {config} = require('bedrock');
 const path = require('path');
-
-const {permissions, roles} = config.permission;
 
 config.karma.suites['bedrock-web-kms'] = path.join('web', '**', '*.js');
 
@@ -35,13 +33,4 @@ config.express.session.secret = 'NOTASECRET';
 config.express.session.key = 'web-authn-token-test-session';
 config.express.session.prefix = 'web-authn-token-test';
 
-roles['account.registered'] = {
-  id: 'account.registered',
-  label: 'Account Test Role',
-  comment: 'Role for Test User',
-  sysPermission: [
-    permissions.ACCOUNT_ACCESS.id,
-    permissions.ACCOUNT_UPDATE.id,
-    permissions.ACCOUNT_INSERT.id
-  ]
-};
+config.express.useSession = true;
