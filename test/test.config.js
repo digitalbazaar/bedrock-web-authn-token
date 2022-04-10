@@ -1,12 +1,16 @@
 /*!
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-'use strict';
+import {config} from '@bedrock/core';
+import path from 'path';
+import '@bedrock/https-agent';
+import '@bedrock/karma';
+import '@bedrock/mongodb';
+import '@bedrock/account-http';
+import '@bedrock/express';
 
-const {config} = require('bedrock');
-const path = require('path');
-
-config.karma.suites['bedrock-web-kms'] = path.join('web', '**', '*.js');
+config.karma.suites['bedrock-web-authn-token'] = path.join(
+  'web', '**', '*.js');
 
 config.karma.config.proxies = {
   '/': 'https://localhost:18443'

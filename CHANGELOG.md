@@ -1,5 +1,11 @@
 # bedrock-web-authn-token ChangeLog
 
+## 3.0.0 - 2022-04-xx
+
+### Changed
+- **BREAKING**: Rename package to `@bedrock/web-authn-token`.
+- **BREAKING**: Convert to module (ESM).
+
 ## 2.5.0 - 2021-05-07
 
 ### Changed
