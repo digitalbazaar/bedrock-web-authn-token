@@ -1,17 +1,18 @@
 /*!
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
-const bedrock = require('bedrock');
-require('bedrock-mongodb');
-require('bedrock-express');
-require('bedrock-session-http');
-require('bedrock-session-mongodb');
-require('bedrock-authn-token');
-require('bedrock-authn-token-http');
-require('bedrock-account');
-require('bedrock-account-http');
-require('bedrock-https-agent');
-require('bedrock-test');
-require('bedrock-karma');
+import * as bedrock from '@bedrock/core';
+import '@bedrock/account';
+import '@bedrock/account-http';
+import '@bedrock/express';
+import '@bedrock/https-agent';
+import '@bedrock/mongodb';
+import '@bedrock/session-http';
+import '@bedrock/session-mongodb';
+import '@bedrock/authn-token';
+import '@bedrock/authn-token-http';
+
+import '@bedrock/test';
+import '@bedrock/karma';
 
 bedrock.start();
