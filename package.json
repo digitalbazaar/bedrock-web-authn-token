@@ -3,7 +3,7 @@
   "version": "5.0.1-0",
   "type": "module",
   "description": "Token-based authentication for Bedrock Web Apps",
-  "module": "./lib/index.js",
+  "exports": "./lib/index.js",
   "scripts": {
     "lint": "eslint ."
   },
