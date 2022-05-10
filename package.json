@@ -1,9 +1,12 @@
 {
   "name": "@bedrock/web-authn-token",
   "version": "5.0.1-0",
-  "type": "module",
   "description": "Token-based authentication for Bedrock Web Apps",
+  "type": "module",
   "exports": "./lib/index.js",
+  "files": [
+    "lib/*"
+  ],
   "scripts": {
     "lint": "eslint ."
   },
@@ -12,9 +15,6 @@
     "email": "support@digitalbazaar.com",
     "url": "https://digitalbazaar.com"
   },
-  "files": [
-    "lib/*"
-  ],
   "dependencies": {
     "@digitalbazaar/http-client": "^3.2.0",
     "base64url-universal": "^2.0.0"
