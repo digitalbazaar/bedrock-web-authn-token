@@ -12,8 +12,8 @@
   "dependencies": {
     "@bedrock/account": "^8.0.0",
     "@bedrock/account-http": "^6.0.0",
-    "@bedrock/authn-token": "^9.0.0",
-    "@bedrock/authn-token-http": "^6.0.0",
+    "@bedrock/authn-token": "^10.0.0",
+    "@bedrock/authn-token-http": "^7.0.0",
     "@bedrock/core": "^6.0.0",
     "@bedrock/express": "^8.0.0",
     "@bedrock/https-agent": "^4.0.0",
