@@ -16,7 +16,8 @@
     "lib/*"
   ],
   "dependencies": {
-    "@digitalbazaar/http-client": "^2.0.1",
+    "@digitalbazaar/http-client": "^3.2.0",
+    "base64url-universal": "^1.1.0",
     "bcryptjs": "^2.4.3"
   },
   "devDependencies": {

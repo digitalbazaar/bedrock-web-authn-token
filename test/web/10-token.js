@@ -70,10 +70,10 @@ describe('token API', function() {
           err = e;
         }
         should.not.exist(err);
-        // FIXME ensure password should return an empty result
         should.exist(result);
         result.should.be.an('object');
         result.should.have.property('result');
+        result.result.should.equal(true);
       });
       it('should create a nonce', async () => {
         const email = 'nonce-test@example.com';
@@ -91,39 +91,10 @@ describe('token API', function() {
           err = e;
         }
         should.not.exist(err);
-        // note: this might not return any data
-        // FIXME: make sure that the nonce returns an empty result
         should.exist(result);
         result.should.be.an('object');
         result.should.have.property('result');
-      });
-      // FIXME challenges have not been implemented in bedrock-authn-token yet:
-      // @see https://github.com/digitalbazaar/bedrock-authn-token/blob/
-      // 7a2d3d5f832c5ce4d665b6d80862c5cd7780c9c9/lib/index.js#L143-L145
-      it.skip('should create a challenge', async () => {
-        const email = 'challenge-test@example.com';
-        let result;
-        let err;
-        let account = null;
-        try {
-          account = await accountService.create({email});
-          ({result} = await tokenService.create({
-            account: account.id,
-            type: 'challenge',
-            challenge: 'test-the-challenge',
-            authenticationMethod: 'test-challenge',
-            serviceId: short_name
-          }));
-        } catch(e) {
-          err = e;
-        }
-        should.not.exist(err);
-        // note: this might not return any data
-        should.exist(result);
-        result.should.be.an('object');
-        result.should.have.property('type');
-        result.type.should.be.a('string');
-        result.type.should.contain('challenge');
+        result.result.should.equal(true);
       });
     }); // end authenticated request
     describe('unauthenticated request', function() {
@@ -168,10 +139,10 @@ describe('token API', function() {
         err = e;
       }
       should.not.exist(err);
-      // FIXME ensure password should return an empty result
       should.exist(result);
       result.should.be.an('object');
       result.should.have.property('result');
+      result.result.should.equal(true);
       result, err = null;
       try {
         ({result} = await tokenService.authenticate(
@@ -233,31 +204,6 @@ describe('token API', function() {
       result.should.have.property('authenticatedMethods');
       result.authenticatedMethods.should.be.an('array');
       result.authenticatedMethods.should.deep.equal(['totp-challenge']);
-    });
-    // FIXME the actual nonce is sent in a bedrock-event
-    // you will need to await that event to login
-    it.skip('should authenticate with a nonce', async function() {
-      const email = 'nonce-auth-test@example.com';
-      let result;
-      let err;
-      let account = null;
-      try {
-        account = await accountService.create({email});
-        result = await tokenService.create({
-          account: account.id,
-          type: 'nonce',
-          authenticationMethod: 'auth-nonce-challenge'
-        });
-      } catch(e) {
-        err = e;
-      }
-      should.not.exist(err);
-      // note: this might not return any data
-      // FIXME: make sure that the nonce returns an empty result
-      should.exist(result);
-      result.should.be.an('object');
-      result.should.have.property('result');
-      // the event should be issued
     });
   });
 });
