@@ -1,6 +1,6 @@
 # bedrock-web-authn-token ChangeLog
 
-## 4.0.0 - 2022-05-xx
+## 4.0.0 - 2022-05-21
 
 ### Changed
 - **BREAKING**: Use `/hash-parameters` route instead of `/salt` route to
