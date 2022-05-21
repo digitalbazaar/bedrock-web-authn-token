@@ -10,6 +10,8 @@
   platforms.
 - **BREAKING**: Return `{result: true}` from `TokenService.create` when
   the response from the server is 204 no content.
+- **BREAKING**: Force all emails to lower case before submission to a backend
+  service.
 
 ## 3.0.0 - 2022-04-10
 
