@@ -1,5 +1,10 @@
 # bedrock-web-authn-token ChangeLog
 
+## 4.0.1 - 2022-05-xx
+
+### Fixed
+- Fix authentication of long, machine-entry style challenges.
+
 ## 4.0.0 - 2022-05-21
 
 ### Changed
