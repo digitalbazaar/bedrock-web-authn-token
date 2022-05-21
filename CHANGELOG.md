@@ -1,5 +1,16 @@
 # bedrock-web-authn-token ChangeLog
 
+## 4.0.0 - 2022-05-xx
+
+### Changed
+- **BREAKING**: Use `/hash-parameters` route instead of `/salt` route to
+  get parameters to hash passwords and nonces.
+- **BREAKING**: Default to using pbkdf2 instead of bcrypt for password
+  and nonce hashing because there is native support for it on all supported
+  platforms.
+- **BREAKING**: Return `{result: true}` from `TokenService.create` when
+  the response from the server is 204 no content.
+
 ## 3.0.0 - 2022-04-10
 
 ### Changed
