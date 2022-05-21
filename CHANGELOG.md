@@ -12,6 +12,9 @@
   the response from the server is 204 no content.
 - **BREAKING**: Force all emails to lower case before submission to a backend
   service.
+- **BREAKING**: Must run against a bedrock server using:
+  - `@bedrock/authn-token@10`
+  - `@bedrock/authn-token-http@7`.
 
 ## 3.0.0 - 2022-04-10
 
