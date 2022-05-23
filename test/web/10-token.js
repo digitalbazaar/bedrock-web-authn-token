@@ -1,8 +1,8 @@
 /*!
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
+import * as totp from '@digitalbazaar/totp';
 import {AccountService} from '@bedrock/web-account';
-import {authenticator} from 'otplib';
 import {createSession, session} from '@bedrock/web-session';
 import {TokenService} from '@bedrock/web-authn-token';
 
@@ -25,9 +25,9 @@ describe('token API', function() {
 
   describe('create API', function() {
     describe('authenticated request', function() {
-      // there are 4 types: password, nonce, challenge, & totp
+      // there are 3 types: password, nonce, and totp
       // @see https://github.com/digitalbazaar/bedrock-authn-token/blob/
-      // 7a2d3d5f832c5ce4d665b6d80862c5cd7780c9c9/lib/helpers.js#L18-L28
+      // v10.0.2/lib/helpers.js#L15
       // totp creates a time-based one-time password
       it('should create a totp', async () => {
         const email = 'totp-test@example.com';
@@ -182,9 +182,10 @@ describe('token API', function() {
       }
       should.not.exist(err);
       should.exist(result);
-      result, err = null;
       // this emulates totp apps like google authenticator
-      const challenge = authenticator.generate(result.secret);
+      const {token: challenge} = await totp.generateToken(
+        {secret: result.secret});
+      result = err = undefined;
       try {
         ({result} = await tokenService.authenticate(
           {type: 'totp', email, challenge}));

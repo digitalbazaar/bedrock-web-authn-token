@@ -1,5 +1,11 @@
 # bedrock-web-authn-token ChangeLog
 
+## 4.0.2 - 2022-05-xx
+
+### Fixed
+- Use `replace` instead of `replaceAll` for node 14.x support.
+- Use `@digitalbazaar/totp` in test suite.
+
 ## 4.0.1 - 2022-05-21
 
 ### Fixed
