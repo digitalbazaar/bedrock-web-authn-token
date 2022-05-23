@@ -1,6 +1,6 @@
 # bedrock-web-authn-token ChangeLog
 
-## 5.0.0 - 2022-05-xx
+## 5.0.0 - 2022-05-22
 
 ### Removed
 - Drop bcrypt support.
