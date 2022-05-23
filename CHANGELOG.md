@@ -1,6 +1,6 @@
 # bedrock-web-authn-token ChangeLog
 
-## 4.0.2 - 2022-05-xx
+## 4.0.2 - 2022-05-22
 
 ### Fixed
 - Use `replace` instead of `replaceAll` for node 14.x support.
