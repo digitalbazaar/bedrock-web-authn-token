@@ -2,8 +2,8 @@
  * Copyright (c) 2019-2022 Digital Bazaar, Inc. All rights reserved.
  */
 import * as totp from '@digitalbazaar/totp';
-import {AccountService} from '@bedrock/web-account';
 import {createSession, session} from '@bedrock/web-session';
+import {AccountService} from '@bedrock/web-account';
 import {TokenService} from '@bedrock/web-authn-token';
 
 const tokenService = new TokenService();
