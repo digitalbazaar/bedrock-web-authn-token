@@ -7,6 +7,10 @@
 - Update dependencies.
 - Lint module.
 
+### Fixed
+- Improve browser and Node.js WebCrypto support. Note that, as of 5.0.0, older
+  browsers and Node.js 14 users need to install an appropriate polyfill.
+
 ## 5.0.0 - 2022-05-22
 
 ### Removed
