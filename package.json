@@ -4,6 +4,9 @@
   "description": "Token-based authentication for Bedrock Web Apps",
   "type": "module",
   "exports": "./lib/index.js",
+  "browser": {
+    "./lib/crypto.js": "./lib/crypto-browser.js"
+  },
   "files": [
     "lib/**/*.js"
   ],
