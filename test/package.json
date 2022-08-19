@@ -25,7 +25,7 @@
     "@bedrock/session-mongodb": "^6.0.0",
     "@bedrock/test": "^8.0.5",
     "@bedrock/validation": "^7.0.0",
-    "@bedrock/web-account": "^3.0.2",
+    "@bedrock/web-account": "^4.0.0",
     "@bedrock/web-authn-token": "file:..",
     "@bedrock/web-session": "^4.0.1",
     "@digitalbazaar/totp": "^1.0.1"
