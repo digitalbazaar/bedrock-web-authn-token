@@ -1,5 +1,11 @@
 # bedrock-web-authn-token ChangeLog
 
+## 6.0.1 -
+
+### Fixed
+- Add `engines.node >= 16` to `package.json` to prevent library from throwing
+  in older versions of node.
+
 ## 6.0.0 - 2022-08-19
 
 ### Changed
