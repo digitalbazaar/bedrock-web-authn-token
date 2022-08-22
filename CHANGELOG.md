@@ -1,5 +1,10 @@
 # bedrock-web-authn-token ChangeLog
 
+## 6.0.1 - 2022-08-xx
+
+### Fixed
+- Properly export `crypto` internally in node 14.
+
 ## 6.0.0 - 2022-08-19
 
 ### Changed
