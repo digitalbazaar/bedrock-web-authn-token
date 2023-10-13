@@ -19,19 +19,22 @@
     "url": "https://digitalbazaar.com"
   },
   "dependencies": {
-    "@digitalbazaar/http-client": "^3.2.0",
+    "@digitalbazaar/http-client": "^4.0.0",
     "base64url-universal": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.18.0",
-    "eslint-config-digitalbazaar": "^4.0.1",
-    "eslint-plugin-jsdoc": "^39.3.3",
-    "eslint-plugin-unicorn": "^42.0.0",
-    "jsdoc": "^3.6.10",
-    "jsdoc-to-markdown": "^7.1.1"
+    "eslint": "^8.51.0",
+    "eslint-config-digitalbazaar": "^5.0.1",
+    "eslint-plugin-jsdoc": "^46.8.2",
+    "eslint-plugin-unicorn": "^48.0.1",
+    "jsdoc": "^4.0.2",
+    "jsdoc-to-markdown": "^8.0.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/digitalbazaar/bedrock-web-authn-token"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
