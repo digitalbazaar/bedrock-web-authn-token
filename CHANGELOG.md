@@ -1,5 +1,11 @@
 # bedrock-web-authn-token ChangeLog
 
+## 7.0.0 - 2023-10-TBD
+
+### Changed
+- **BREAKING**: Drop support for Node.js < 18.
+- Use `@digitalbazaar/http-client@4.0`. Requires Node.js 18+.
+
 ## 6.0.1 - 2022-08-22
 
 ### Fixed
