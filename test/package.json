@@ -27,7 +27,7 @@
     "@bedrock/validation": "^7.0.0",
     "@bedrock/web-account": "^5.0.0",
     "@bedrock/web-authn-token": "file:..",
-    "@bedrock/web-session": "^4.0.1",
+    "@bedrock/web-session": "^5.0.0",
     "@digitalbazaar/totp": "^1.0.1"
   }
 }
