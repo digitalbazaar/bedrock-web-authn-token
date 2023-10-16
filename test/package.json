@@ -17,7 +17,7 @@
     "@bedrock/core": "^6.0.1",
     "@bedrock/express": "^8.0.0",
     "@bedrock/https-agent": "^4.0.0",
-    "@bedrock/karma": "^5.1.0",
+    "@bedrock/karma": "^6.0.0",
     "@bedrock/mongodb": "^10.0.0",
     "@bedrock/passport": "^11.0.0",
     "@bedrock/server": "^5.0.0",
@@ -28,6 +28,7 @@
     "@bedrock/web-account": "^5.0.0",
     "@bedrock/web-authn-token": "file:..",
     "@bedrock/web-session": "^5.0.0",
-    "@digitalbazaar/totp": "^1.0.1"
+    "@digitalbazaar/totp": "^1.0.1",
+    "@vue/compiler-sfc": "^3.3.4"
   }
 }
