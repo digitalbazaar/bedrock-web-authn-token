@@ -1,6 +1,6 @@
 # bedrock-web-authn-token ChangeLog
 
-## 7.0.0 - 2023-10-TBD
+## 7.0.0 - 2023-10-16
 
 ### Changed
 - **BREAKING**: Drop support for Node.js < 18.
