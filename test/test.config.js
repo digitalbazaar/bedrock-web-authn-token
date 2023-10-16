@@ -11,9 +11,11 @@ import '@bedrock/express';
 
 config.karma.suites['bedrock-web-authn-token'] = path.join(
   'web', '**', '*.js');
-
 config.karma.config.proxies = {
-  '/': 'https://localhost:18443'
+  '/': {
+    target: 'https://localhost:18443/',
+    changeOrigin: true
+  }
 };
 config.karma.config.proxyValidateSSL = false;
 
