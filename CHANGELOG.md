@@ -1,6 +1,6 @@
 # bedrock-web-authn-token ChangeLog
 
-## 7.0.1 - 2025-mm-dd
+## 7.0.1 - 2025-07-16
 
 ### Fixed
 - Fix bug with pbkdf2 expression of salt parameter.
